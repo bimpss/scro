@@ -9,7 +9,7 @@ const bot = new Telegraf(BOT_TOKEN);
 
 // Ethereum NFT collection contract addresses
 const CONTRACT_1 = '0xebcf83bde8e82708bfc027b2c32412283b6c23ff'; //og
-const CONTRACT_2 = '0xebcf83bde8e82708bfc027b2c32412283b6c23ff'; //3d
+const CONTRACT_2 = '0x7115a8ecc11336e594618ef85be0b920dfe205d3'; //3d
 
 // Helper: Download image from URL
 async function downloadImage(url) {
@@ -93,9 +93,9 @@ bot.command('scroto', async (ctx) => {
     const tempFilePath = path.join(__dirname, `merged_\${id}.png`);
     await fs.writeFile(tempFilePath, combined);
 
-    const caption = `Owners of NFT # ${id}:
-2️⃣D: \`${data1.owner}\`
-3️⃣D: \`${data2.owner}\``;
+    const caption = `Owners of Scroto # ${id}:
+\`${data1.owner}\` (2D)
+\`${data2.owner}\` (3D)`;
 
     await ctx.replyWithPhoto({ source: tempFilePath }, { caption });
 
