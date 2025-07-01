@@ -105,7 +105,7 @@ async function getTokenData2D(contract, tokenId) {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
                     'Accept': 'application/json'
                 },
-                timeout: 5000 // timeout in milliseconds (5 seconds)
+                timeout: 30000 // timeout in milliseconds (5 seconds)
             });
             const metadata = metadataResponse.data;
             console.log("metadataResponse**********")
