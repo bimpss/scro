@@ -78,7 +78,7 @@ async function getTokenData2D(contract, tokenId) {
     let owner = ""
     let ownerAddy = ""
     let tokenUri = ""
-    let which = whichContract + "D"
+    let which = "2D"
 
 
     try {
@@ -86,7 +86,7 @@ async function getTokenData2D(contract, tokenId) {
         owner = await contract.explicitOwnershipOf(tokenId);
         //console.log(2D owner: "+owner)
         ownerAddy = owner.addr
-        console.log("2D ownerAddy: "+ownerAddy)
+        console.log("2D ownerAddy: " + ownerAddy)
 
         // Fetch tokenURI from contract
         tokenUri = await contract.tokenURI(tokenId);
@@ -109,7 +109,7 @@ async function getTokenData2D(contract, tokenId) {
         }
         console.log("2D imageUrl:  " + imageUrl)
 
-        console.log("return { owner: "+ownerAddy+", imageUrl:  " + imageUrl+" }")
+        console.log("return { owner: " + ownerAddy + ", imageUrl:  " + imageUrl + " }")
         return {
             owner: ownerAddy,
             image: imageUrl,
@@ -124,35 +124,27 @@ async function getTokenData2D(contract, tokenId) {
     }
 }
 
-async function getTokenData3D(contract, tokenId, whichContract) {
+async function getTokenData3D(contract, tokenId) {
 
     //console.log("tokenId: " + tokenId)
-    //console.log("whichContract: " + whichContract)
 
     let owner = ""
     let ownerAddy = ""
     let tokenUri = ""
-    let which = whichContract + "D"
+    let which = "3D"
 
 
     try {
         // Fetch owner from contract
-        if (whichContract = 2) {   //2d
-            owner = await contract.explicitOwnershipOf(tokenId);
-            //console.log("*try* 2D owner: "+owner)
-            ownerAddy = owner.addr
-            //console.log("*try* 2D ownerAddy: "+ownerAddy)
-        }
-        if (whichContract = 3) {   //3d
-            //ownerAddy = await contract.ownerOf(tokenId);
-            //console.log("*try* 3D ownerAddy: "+ownerAddy)
-        }
+        ownerAddy = await contract.ownerOf(tokenId);
+        console.log("*try* 3D ownerAddy: " + ownerAddy)
+
 
         // Fetch tokenURI from contract
         tokenUri = await contract.tokenURI(tokenId);
 
-        console.log("*try* ownerAddy: " + ownerAddy)
-        console.log("*try* tokenUri:  " + tokenUri)
+        console.log("3d ownerAddy: " + ownerAddy)
+        console.log("3d tokenUri:  " + tokenUri)
 
         // Convert ipfs:// to https://ipfs.io/ipfs/
         if (tokenUri.startsWith('ipfs://')) {
