@@ -24,8 +24,8 @@ const ERC721_ABI = [
 const CONTRACT_1 = '0xebcf83bde8e82708bfc027b2c32412283b6c23ff'; // 2D og
 const CONTRACT_2 = '0x7115a8ecc11336e594618ef85be0b920dfe205d3'; // 3D
 
-const contract1 = new Contract(CONTRACT_1, ERC721_ABI, provider);
-const contract2 = new Contract(CONTRACT_2, ERC721_ABI, provider);
+const contract1 = new ethers.Contract(CONTRACT_1, ERC721_ABI, provider);
+const contract2 = new ethers.Contract(CONTRACT_2, ERC721_ABI, provider);
 
 // Helper: Download image from URL
 async function downloadImage(url) {
