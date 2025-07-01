@@ -65,7 +65,10 @@ async function combineImages(buffer1, buffer2) {
 
 // Helper: Fetch token data from contract and metadata URI
 async function getTokenData(contract, tokenId) {
-  try {
+  
+    console.log("tokenId: "+tokenId)
+
+    try {
     // Fetch owner from contract
     const owner = await contract.ownerOf(tokenId);
 
