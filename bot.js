@@ -48,17 +48,17 @@ async function combineImages(buffer1, buffer2) {
 // Helper: Fetch token data from Magic Eden
 async function getTokenData(contract, tokenId) {
   try {
-    //const url = `https://api-mainnet.magiceden.dev/v3/rtp/ethereum/tokens/v6?collection=\`${contract}\`&tokenIds=\`${tokenId}\``;
-    const url = `https://api-mainnet.magiceden.dev/v3/rtp/ethereum/tokens/v6?collection=${contract}&tokenIds=${tokenId}`;
+    const url = `https://api-mainnet.magiceden.dev/v3/rtp/ethereum/tokens/v6?tokenMint=${contract}&tokenIds=${tokenId}`;
+    console.log(url);
 
-    
-    console.log(url)
-    
     const res = await axios.get(url);
-    const token = res.data?.results?.[0];
+    
+    const token = res.data?.tokens?.[0]?.token;
+    console.log(JSON.stringify(res.data, null, 2));
+
     return {
       owner: token?.owner || 'Unknown',
-      image: token?.imageUrl || null
+      image: token?.image || null
     };
   } catch (err) {
     console.error('Magic Eden fetch error:', err.message);
