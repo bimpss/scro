@@ -98,27 +98,32 @@ async function getTokenData2D(contract, tokenId) {
         }
         console.log("2D tokenUri:  " + tokenUri)
 
-        // Fetch metadata JSON
-        const metadataResponse = await axios.get(tokenUri, { timeout: 15000 });
-        const metadata = metadataResponse.data;
-        console.log("metadataResponse**********")
-        console.log(JSON.stringify(metadataResponse));
-        console.log("metadataResponse.data*****")
-        console.log(JSON.stringify(metadataResponse.data));
+        try {
+            // Fetch metadata JSON
+            const metadataResponse = await axios.get(tokenUri, { timeout: 15000 });
+            const metadata = metadataResponse.data;
+            console.log("metadataResponse**********")
+            console.log(JSON.stringify(metadataResponse));
+            console.log("metadataResponse.data*****")
+            console.log(JSON.stringify(metadataResponse.data));
 
-        // Metadata image might be ipfs:// too, fix that
-        let imageUrl = metadata.image || metadata.image_url || null;
-        if (imageUrl && imageUrl.startsWith('ipfs://')) {
-            imageUrl = imageUrl.replace('ipfs://', 'https://ipfs.io/ipfs/');
+            // Metadata image might be ipfs:// too, fix that
+            let imageUrl = metadata.image || metadata.image_url || null;
+            if (imageUrl && imageUrl.startsWith('ipfs://')) {
+                imageUrl = imageUrl.replace('ipfs://', 'https://ipfs.io/ipfs/');
+            }
+            console.log("2D imageUrl:  " + imageUrl)
+
+            console.log("return { owner: " + ownerAddy + ", imageUrl:  " + imageUrl + " }")
+            return {
+                owner: ownerAddy,
+                image: imageUrl,
+                //name: metadata.name || `Token #${tokenId}`
+            };
         }
-        console.log("2D imageUrl:  " + imageUrl)
-
-        console.log("return { owner: " + ownerAddy + ", imageUrl:  " + imageUrl + " }")
-        return {
-            owner: ownerAddy,
-            image: imageUrl,
-            //name: metadata.name || `Token #${tokenId}`
-        };
+        catch (err) {
+            console.error(`Error fetching token ${tokenId} metadata from ipfs for ${which} token:`, err.message);
+        }
     } catch (err) {
         console.error(`Error fetching token ${tokenId} data from ${which} contract:`, err.message);
         //console.log("*catch* whichContract: " + which)
