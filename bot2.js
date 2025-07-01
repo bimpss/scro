@@ -92,15 +92,21 @@ async function getTokenData2D(contract, tokenId) {
         tokenUri = await contract.tokenURI(tokenId);
         //console.log("2D tokenUri:  " + tokenUri)
 
-        // Convert ipfs:// to https://ipfs.io/ipfs/
+        // Convert ipfs:// to https://cloudflare-ipfs.com/ipfs/
         if (tokenUri.startsWith('ipfs://')) {
-            tokenUri = tokenUri.replace('ipfs://', 'https://ipfs.io/ipfs/');
+            tokenUri = tokenUri.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
         }
         console.log("2D tokenUri:  " + tokenUri)
 
         try {
             // Fetch metadata JSON
-            const metadataResponse = await axios.get(tokenUri, { timeout: 15000 });
+            const metadataResponse = await axios.get(tokenUri, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                    'Accept': 'application/json'
+                },
+                timeout: 5000 // timeout in milliseconds (5 seconds)
+            });
             const metadata = metadataResponse.data;
             console.log("metadataResponse**********")
             console.log(JSON.stringify(metadataResponse));
@@ -110,7 +116,7 @@ async function getTokenData2D(contract, tokenId) {
             // Metadata image might be ipfs:// too, fix that
             let imageUrl = metadata.image || metadata.image_url || null;
             if (imageUrl && imageUrl.startsWith('ipfs://')) {
-                imageUrl = imageUrl.replace('ipfs://', 'https://ipfs.io/ipfs/');
+                imageUrl = imageUrl.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
             }
             console.log("2D imageUrl:  " + imageUrl)
 
