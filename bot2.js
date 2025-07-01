@@ -71,7 +71,7 @@ async function getTokenData(contract, tokenId) {
 
     try {
     // Fetch owner from contract
-    const owner = await contract.ownerOf(tokenId);
+    const owner = await contract.explicitOwnershipOf(tokenId);
 
     // Fetch tokenURI from contract
     let tokenUri = await contract.tokenURI(tokenId);
