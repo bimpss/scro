@@ -48,7 +48,9 @@ async function combineImages(buffer1, buffer2) {
 // Helper: Fetch token data from Magic Eden
 async function getTokenData(contract, tokenId) {
   try {
-    const url = `https://api-mainnet.magiceden.dev/v3/rtp/ethereum/tokens/v6?collection=\`${contract}\`&tokenIds=\`${tokenId}\``;
+    //const url = `https://api-mainnet.magiceden.dev/v3/rtp/ethereum/tokens/v6?collection=\`${contract}\`&tokenIds=\`${tokenId}\``;
+    const url = `https://api-mainnet.magiceden.dev/v3/rtp/ethereum/tokens/v6?tokenMint=${contract}&tokenIds=${tokenId}`;
+
     
     console.log(url)
     
