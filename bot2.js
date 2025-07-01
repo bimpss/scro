@@ -99,7 +99,7 @@ async function getTokenData2D(contract, tokenId) {
         console.log("2D tokenUri:  " + tokenUri)
 
         // Fetch metadata JSON
-        const metadataResponse = await axios.get(tokenUri);
+        const metadataResponse = await axios.get(tokenUri, { timeout: 15000 });
         const metadata = metadataResponse.data;
         console.log("metadataResponse**********")
         console.log(JSON.stringify(metadataResponse));
