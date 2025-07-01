@@ -70,9 +70,10 @@ async function combineImages(buffer1, buffer2) {
 }
 
 // Helper: Fetch token data from contract and metadata URI
-async function getTokenData(contract, tokenId) {
-  
+async function getTokenData(contract, tokenId, whichContract) {
+    
     console.log("tokenId: "+tokenId)
+    console.log("whichContract: "+whichContract)
 
     try {
     // Fetch owner from contract
@@ -118,8 +119,8 @@ bot.command('scroto', async (ctx) => {
 
   try {
     const [data1, data2] = await Promise.all([
-      getTokenData(contract1, id),
-      getTokenData(contract2, id)
+      getTokenData(contract1, id, "2D"),
+      getTokenData(contract2, id, "3D")
     ]);
 
     if (!data1.image || !data2.image) {
