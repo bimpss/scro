@@ -70,16 +70,70 @@ async function combineImages(buffer1, buffer2) {
 }
 
 // Helper: Fetch token data from contract and metadata URI
-async function getTokenData(contract, tokenId, whichContract) {
+async function getTokenData2D(contract, tokenId) {
 
     //console.log("tokenId: " + tokenId)
     //console.log("whichContract: " + whichContract)
 
-    let owner=""
-    let ownerAddy=""
-    let tokenUri=""
-    let which=whichContract+"D"
-    
+    let owner = ""
+    let ownerAddy = ""
+    let tokenUri = ""
+    let which = whichContract + "D"
+
+
+    try {
+        // Fetch owner from contract
+        owner = await contract.explicitOwnershipOf(tokenId);
+        //console.log(2D owner: "+owner)
+        ownerAddy = owner.addr
+        console.log("2D ownerAddy: "+ownerAddy)
+
+        // Fetch tokenURI from contract
+        tokenUri = await contract.tokenURI(tokenId);
+        console.log("2D tokenUri:  " + tokenUri)
+
+        // Convert ipfs:// to https://ipfs.io/ipfs/
+        if (tokenUri.startsWith('ipfs://')) {
+            tokenUri = tokenUri.replace('ipfs://', 'https://ipfs.io/ipfs/');
+        }
+        console.log("2D tokenUri:  " + tokenUri)
+
+        // Fetch metadata JSON
+        const metadataResponse = await axios.get(tokenUri);
+        const metadata = metadataResponse.data;
+
+        // Metadata image might be ipfs:// too, fix that
+        let imageUrl = metadata.image || metadata.image_url || null;
+        if (imageUrl && imageUrl.startsWith('ipfs://')) {
+            imageUrl = imageUrl.replace('ipfs://', 'https://ipfs.io/ipfs/');
+        }
+        console.log("2D imageUrl:  " + imageUrl)
+
+        console.log("return { owner: "+ownerAddy+", imageUrl:  " + imageUrl+" }")
+        return {
+            owner: ownerAddy,
+            image: imageUrl,
+            //name: metadata.name || `Token #${tokenId}`
+        };
+    } catch (err) {
+        console.error(`Error fetching token ${tokenId} data from ${which} contract:`, err.message);
+        //console.log("*catch* whichContract: " + which)
+        //console.log("*catch* ownerAddy:     " + ownerAddy)
+        //console.log("*catch* tokenUri:      " + tokenUri)
+        return { owner: 'Unknown', image: null, name: `Token #${tokenId}` };
+    }
+}
+
+async function getTokenData3D(contract, tokenId, whichContract) {
+
+    //console.log("tokenId: " + tokenId)
+    //console.log("whichContract: " + whichContract)
+
+    let owner = ""
+    let ownerAddy = ""
+    let tokenUri = ""
+    let which = whichContract + "D"
+
 
     try {
         // Fetch owner from contract
@@ -139,7 +193,7 @@ bot.command('scroto', async (ctx) => {
 
     try {
         const [data1, data2] = await Promise.all([
-            getTokenData(contract1, id, 2),   //2d
+            getTokenData2D(contract1, id),   //2d
             //getTokenData(contract2, id, 3)    //3d
         ]);
 
