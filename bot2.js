@@ -90,7 +90,7 @@ async function getTokenData(contract, tokenId, whichContract) {
             //console.log("*try* 2D ownerAddy: "+ownerAddy)
         }
         if (whichContract = 3) {   //3d
-            ownerAddy = await contract.ownerOf(tokenId);
+            //ownerAddy = await contract.ownerOf(tokenId);
             //console.log("*try* 3D ownerAddy: "+ownerAddy)
         }
 
