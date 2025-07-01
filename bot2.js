@@ -11,6 +11,7 @@ const infuraProjectId = process.env.INFURA_PROJECT_ID;
 const provider = new ethers.JsonRpcProvider(
   `https://mainnet.infura.io/v3/${infuraProjectId}`
 );
+provider.getBlockNumber().then(console.log).catch(console.error);
 console.log(provider);
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
