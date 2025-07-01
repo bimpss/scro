@@ -90,7 +90,7 @@ async function getTokenData2D(contract, tokenId) {
 
         // Fetch tokenURI from contract
         tokenUri = await contract.tokenURI(tokenId);
-        console.log("2D tokenUri:  " + tokenUri)
+        //console.log("2D tokenUri:  " + tokenUri)
 
         // Convert ipfs:// to https://ipfs.io/ipfs/
         if (tokenUri.startsWith('ipfs://')) {
@@ -101,6 +101,10 @@ async function getTokenData2D(contract, tokenId) {
         // Fetch metadata JSON
         const metadataResponse = await axios.get(tokenUri);
         const metadata = metadataResponse.data;
+        console.log("metadataResponse**********")
+        console.log(JSON.stringify(metadataResponse));
+        console.log("metadataResponse.data*****")
+        console.log(JSON.stringify(metadataResponse.data));
 
         // Metadata image might be ipfs:// too, fix that
         let imageUrl = metadata.image || metadata.image_url || null;
