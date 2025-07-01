@@ -92,9 +92,9 @@ async function getTokenData2D(contract, tokenId) {
         tokenUri = await contract.tokenURI(tokenId);
         //console.log("2D tokenUri:  " + tokenUri)
 
-        // Convert ipfs:// to https://cloudflare-ipfs.com/ipfs/
+        // Convert ipfs:// to https://ipfs.io/ipfs/
         if (tokenUri.startsWith('ipfs://')) {
-            tokenUri = tokenUri.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
+            tokenUri = tokenUri.replace('ipfs://', 'https://ipfs.io/ipfs/');
         }
         console.log("2D tokenUri:  " + tokenUri)
 
@@ -116,7 +116,7 @@ async function getTokenData2D(contract, tokenId) {
             // Metadata image might be ipfs:// too, fix that
             let imageUrl = metadata.image || metadata.image_url || null;
             if (imageUrl && imageUrl.startsWith('ipfs://')) {
-                imageUrl = imageUrl.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
+                imageUrl = imageUrl.replace('ipfs://', 'https://ipfs.io/ipfs/');
             }
             console.log("2D imageUrl:  " + imageUrl)
 
