@@ -3,7 +3,7 @@ const axios = require('axios');
 const sharp = require('sharp');
 const fs = require('fs/promises');
 const path = require('path');
-const { ethers } = require('ethers');
+const { JsonRpcProvider } = require('ethers');
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
@@ -11,7 +11,7 @@ const bot = new Telegraf(BOT_TOKEN);
 const infuraProjectId = process.env.INFURA_PROJECT_ID;
 
 // Ethereum provider (use your own Infura/Alchemy or public RPC)
-const provider = new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${infuraProjectId}`);
+const provider = new JsonRpcProvider(`https://mainnet.infura.io/v3/${infuraProjectId}`);
 
 // ERC-721 minimal ABI for ownerOf and tokenURI
 const ERC721_ABI = [
