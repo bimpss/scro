@@ -77,11 +77,11 @@ async function getTokenData(contract, tokenId, whichContract) {
 
     try {
     // Fetch owner from contract
-    if (whichContract=="2D"){
+    if (whichContract=2){   //2d
     const owner = await contract.explicitOwnershipOf(tokenId);
     const ownerAddy = owner.addr    
-    } else
-    {
+    }
+    if (whichContract=3){   //3d
     const ownerAddy = await contract.ownerOf(tokenId);
     }
 
@@ -113,6 +113,9 @@ async function getTokenData(contract, tokenId, whichContract) {
     };
   } catch (err) {
     console.error(`Error fetching token ${tokenId} data from ${whichContract} contract:`, err.message);
+    console.log("whichContract: "+whichContract+"D")
+    console.log("ownerAddy:     "+ownerAddy)
+    console.log("tokenUri:      "+tokenUri)
     return { owner: 'Unknown', image: null, name: `Token #${tokenId}` };
   }
 }
@@ -127,8 +130,8 @@ bot.command('scroto', async (ctx) => {
 
   try {
     const [data1, data2] = await Promise.all([
-      getTokenData(contract1, id, "2D"),
-      getTokenData(contract2, id, "3D")
+      getTokenData(contract1, id, 2),   //2d
+      getTokenData(contract2, id, 3)    //3d
     ]);
 
     if (!data1.image || !data2.image) {
