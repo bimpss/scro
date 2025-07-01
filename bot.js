@@ -56,8 +56,8 @@ async function getTokenData(contract, tokenId, chatId) {
     const tokens = res.data?.tokens || [];
     console.log('Tokens returned:', tokens.map(t => t.token?.tokenId));
 
-    const tokenEntry = tokens.find(
-      t => t?.token?.tokenId?.toString() === tokenId.toString()
+    const tokenEntry = tokens?.find(
+      t => String(t?.token?.tokenId) === String(tokenId)
     );
 
     if (!tokenEntry) {
@@ -66,8 +66,8 @@ async function getTokenData(contract, tokenId, chatId) {
 
     const tokenData = tokenEntry.token;
 
-    console.log("tokenData?.token?.name: "+tokenData?.token?.name); // should be "Scroto Schizo #1102"
-    console.log("tokenData?.token?.image: "+tokenData?.token?.image); // should be a valid image URL
+    console.log("tokenData?.token?.name: " + tokenData?.token?.name); // should be "Scroto Schizo #1102"
+    console.log("tokenData?.token?.image: " + tokenData?.token?.image); // should be a valid image URL
 
     return {
       owner: tokenData?.owner || 'Unknown',
@@ -83,6 +83,7 @@ async function getTokenData(contract, tokenId, chatId) {
 bot.command('scroto', async (ctx) => {
   const input = ctx.message.text.split(' ')[1];
   const id = parseInt(input, 10);
+  const chatId = ctx.chat.id;
 
   if (!/^\d+$/.test(input) || id < 1 || id > 6666) {
     return ctx.reply('Come again?');
