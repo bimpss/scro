@@ -46,15 +46,19 @@ async function combineImages(buffer1, buffer2) {
 }
 
 // Helper: Fetch token data from Magic Eden
-async function getTokenData(contract, tokenId) {
+async function getTokenData(contract, tokenId, chatId) {
   try {        //https://api-mainnet.magiceden.dev/v3/rtp/ethereum/tokens/v6?collection=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenIds=1
     const url = `https://api-mainnet.magiceden.dev/v3/rtp/ethereum/tokens/v6?collection=${contract}&tokenIds=${tokenId}`;
     console.log(url);
 
     const res = await axios.get(url);
 
-    const tokenEntry = res.data?.tokens?.find(
-      t => t?.token?.tokenId === tokenId.toString()
+    const res = await axios.get(url);
+    const tokens = res.data?.tokens || [];
+    console.log('Tokens returned:', tokens.map(t => t.token?.tokenId));
+
+    const tokenEntry = tokens.find(
+      t => t?.token?.tokenId?.toString() === tokenId.toString()
     );
 
     if (!tokenEntry) {
@@ -63,8 +67,8 @@ async function getTokenData(contract, tokenId) {
 
     const tokenData = tokenEntry.token;
 
-    console.log(tokenData?.token?.name); // should be "Scroto Schizo #1102"
-    console.log(tokenData?.token?.image); // should be a valid image URL
+    console.log("tokenData?.token?.name: "+tokenData?.token?.name); // should be "Scroto Schizo #1102"
+    console.log("tokenData?.token?.image: "+tokenData?.token?.image); // should be a valid image URL
 
     return {
       owner: tokenData?.owner || 'Unknown',
@@ -72,6 +76,7 @@ async function getTokenData(contract, tokenId) {
     };
   } catch (err) {
     console.error('Magic Eden fetch error:', err.message);
+    bot.sendMessage(chatId, `⚠️ Failed to fetch token ${tokenId}.`);
     return { owner: 'Error', image: null };
   }
 }
@@ -86,8 +91,8 @@ bot.command('scroto', async (ctx) => {
 
   try {
     const [data1, data2] = await Promise.all([
-      getTokenData(CONTRACT_1, id),
-      getTokenData(CONTRACT_2, id)
+      getTokenData(CONTRACT_1, id, chatId),
+      getTokenData(CONTRACT_2, id, chatId)
     ]);
 
     if (!data1.image || !data2.image) {
