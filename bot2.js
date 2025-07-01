@@ -88,6 +88,9 @@ async function getTokenData(contract, tokenId, whichContract) {
     // Fetch tokenURI from contract
     let tokenUri = await contract.tokenURI(tokenId);
 
+    console.log("ownerAddy: "+ownerAddy)
+    console.log("tokenUri:  "+tokenUri)
+
     // Convert ipfs:// to https://ipfs.io/ipfs/
     if (tokenUri.startsWith('ipfs://')) {
       tokenUri = tokenUri.replace('ipfs://', 'https://ipfs.io/ipfs/');
