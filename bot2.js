@@ -85,13 +85,13 @@ async function getTokenData(contract, tokenId, whichContract) {
         // Fetch owner from contract
         if (whichContract = 2) {   //2d
             owner = await contract.explicitOwnershipOf(tokenId);
-            console.log("*try* 2D owner: "+owner)
+            //console.log("*try* 2D owner: "+owner)
             ownerAddy = owner.addr
-            console.log("*try* 2D ownerAddy: "+ownerAddy)
+            //console.log("*try* 2D ownerAddy: "+ownerAddy)
         }
         if (whichContract = 3) {   //3d
             ownerAddy = await contract.ownerOf(tokenId);
-            console.log("*try* 3D ownerAddy: "+ownerAddy)
+            //console.log("*try* 3D ownerAddy: "+ownerAddy)
         }
 
         // Fetch tokenURI from contract
@@ -140,8 +140,10 @@ bot.command('scroto', async (ctx) => {
     try {
         const [data1, data2] = await Promise.all([
             getTokenData(contract1, id, 2),   //2d
-            getTokenData(contract2, id, 3)    //3d
+            //getTokenData(contract2, id, 3)    //3d
         ]);
+
+        return;
 
         if (!data1.image || !data2.image) {
             return ctx.reply('Could not fetch images from token metadata.');
