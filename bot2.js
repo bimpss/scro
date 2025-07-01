@@ -18,7 +18,12 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
 
 // ERC-721 minimal ABI for ownerOf and tokenURI
-const ERC721A_ABI = [
+const ERC721A_ABI_2D = [
+    "function explicitOwnershipOf(uint256 tokenId) view returns (tuple(address addr, uint64 startTimestamp, bool burned, uint24 extraData))",
+    "function tokenURI(uint256 tokenId) view returns (string)"
+];
+
+const ERC721A_ABI_3D = [
     "function ownerOf(uint256 tokenId) view returns uint64 startTimestamp, bool burned, uint24 extraData))",
     "function tokenURI(uint256 tokenId) view returns (string)"
 ];
@@ -27,8 +32,8 @@ const ERC721A_ABI = [
 const CONTRACT_1 = '0xebcf83bde8e82708bfc027b2c32412283b6c23ff'; // 2D og
 const CONTRACT_2 = '0x7115a8ecc11336e594618ef85be0b920dfe205d3'; // 3D
 
-const contract1 = new ethers.Contract(CONTRACT_1, ERC721A_ABI, provider);
-const contract2 = new ethers.Contract(CONTRACT_2, ERC721A_ABI, provider);
+const contract1 = new ethers.Contract(CONTRACT_1, ERC721A_ABI_2D, provider);
+const contract2 = new ethers.Contract(CONTRACT_2, ERC721A_ABI_3D, provider);
 
 // Helper: Download image from URL
 async function downloadImage(url) {
@@ -79,9 +84,9 @@ async function getTokenData(contract, tokenId, whichContract) {
     try {
         // Fetch owner from contract
         if (whichContract = 2) {   //2d
-            ownerAddy = await contract.ownerOf(tokenId);
+            owner = await contract.explicitOwnershipOf(tokenId);
             //console.log("*try* 2D owner: "+owner)
-            //ownerAddy = owner.addr
+            ownerAddy = owner.addr
             //console.log("*try* 2D ownerAddy: "+ownerAddy)
         }
         if (whichContract = 3) {   //3d
