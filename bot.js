@@ -53,7 +53,6 @@ async function getTokenData(contract, tokenId, chatId) {
 
     const res = await axios.get(url);
 
-    const res = await axios.get(url);
     const tokens = res.data?.tokens || [];
     console.log('Tokens returned:', tokens.map(t => t.token?.tokenId));
 
