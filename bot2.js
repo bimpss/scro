@@ -77,8 +77,13 @@ async function getTokenData(contract, tokenId, whichContract) {
 
     try {
     // Fetch owner from contract
+    if (whichContract=="2D"){
     const owner = await contract.explicitOwnershipOf(tokenId);
-    const ownerAddy = ownership.addr
+    const ownerAddy = ownership.addr    
+    } else
+    {
+    const ownerAddy = await contract.ownerOf(tokenId);
+    }
 
     // Fetch tokenURI from contract
     let tokenUri = await contract.tokenURI(tokenId);
