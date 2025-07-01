@@ -52,16 +52,23 @@ async function getTokenData(contract, tokenId) {
     console.log(url);
 
     const res = await axios.get(url);
-    
-    const tokenEntry = res.data?.tokens?.find(t => t?.token?.tokenId === String(tokenId));
-    console.log("tokenEntry: "+JSON.stringify(tokenEntry, null, 2))
 
-    const token = tokenEntry?.token;
-    console.log("token: "+JSON.stringify(token, null, 2));
+    const tokenEntry = res.data?.tokens?.find(
+      t => t?.token?.tokenId === tokenId.toString()
+    );
+
+    if (!tokenEntry) {
+      return bot.sendMessage(chatId, `Token ID ${tokenId} not found.`);
+    }
+
+    const tokenData = tokenEntry.token;
+
+    console.log(tokenData?.token?.name); // should be "Scroto Schizo #1102"
+    console.log(tokenData?.token?.image); // should be a valid image URL
 
     return {
-      owner: token?.owner || 'Unknown',
-      image: token?.image || null
+      owner: tokenData?.owner || 'Unknown',
+      image: tokenData?.image || null
     };
   } catch (err) {
     console.error('Magic Eden fetch error:', err.message);
