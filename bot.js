@@ -54,9 +54,10 @@ async function getTokenData(contract, tokenId) {
     const res = await axios.get(url);
     
     const tokenEntry = res.data?.tokens?.find(t => t?.token?.tokenId === String(tokenId));
+    console.log("tokenEntry: "+JSON.stringify(tokenEntry, null, 2))
 
     const token = tokenEntry?.token;
-    console.log(JSON.stringify(res.data, null, 2));
+    console.log("token: "+JSON.stringify(token, null, 2));
 
     return {
       owner: token?.owner || 'Unknown',
