@@ -106,10 +106,10 @@ async function getTokenData(contract, tokenId, whichContract) {
     return {
       ownerAddy,
       image: imageUrl,
-      name: metadata.name || `Token #${tokenId}`
+      //name: metadata.name || `Token #${tokenId}`
     };
   } catch (err) {
-    console.error(`Error fetching token ${tokenId} data from contract:`, err.message);
+    console.error(`Error fetching token ${tokenId} data from ${whichContract} contract:`, err.message);
     return { owner: 'Unknown', image: null, name: `Token #${tokenId}` };
   }
 }
