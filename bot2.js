@@ -18,17 +18,17 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
 
 // ERC-721 minimal ABI for ownerOf and tokenURI
-const ERC721_ABI = [
-  "function ownerOf(uint256 tokenId) view returns (address)",
-  "function tokenURI(uint256 tokenId) view returns (string)",
+const ERC721A_ABI = [
+  "function explicitOwnershipOf(uint256 tokenId) view returns (tuple(address addr, uint64 startTimestamp, bool burned, uint24 extraData))",
+  "function tokenURI(uint256 tokenId) view returns (string)"
 ];
 
 // Ethereum NFT collection contract addresses
 const CONTRACT_1 = '0xebcf83bde8e82708bfc027b2c32412283b6c23ff'; // 2D og
 const CONTRACT_2 = '0x7115a8ecc11336e594618ef85be0b920dfe205d3'; // 3D
 
-const contract1 = new ethers.Contract(CONTRACT_1, ERC721_ABI, provider);
-const contract2 = new ethers.Contract(CONTRACT_2, ERC721_ABI, provider);
+const contract1 = new ethers.Contract(CONTRACT_1, ERC721A_ABI, provider);
+const contract2 = new ethers.Contract(CONTRACT_2, ERC721A_ABI, provider);
 
 // Helper: Download image from URL
 async function downloadImage(url) {
