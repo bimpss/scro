@@ -7,10 +7,11 @@ const fs = require('fs/promises');
 const path = require('path');
 const { ethers } = require('ethers');
 const infuraProjectId = process.env.INFURA_PROJECT_ID;
-console.log(infuraProjectId);
+//console.log(infuraProjectId);
 const provider = new ethers.JsonRpcProvider(
   `https://mainnet.infura.io/v3/${infuraProjectId}`
 );
+console.log(provider);
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
