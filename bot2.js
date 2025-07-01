@@ -72,11 +72,12 @@ async function combineImages(buffer1, buffer2) {
 // Helper: Fetch token data from contract and metadata URI
 async function getTokenData(contract, tokenId, whichContract) {
 
-    console.log("tokenId: " + tokenId)
-    console.log("whichContract: " + whichContract)
+    //console.log("tokenId: " + tokenId)
+    //console.log("whichContract: " + whichContract)
 
     let owner=""
     let ownerAddy=""
+    let tokenUri=""
     let which=whichContract+"D"
     
 
@@ -84,20 +85,20 @@ async function getTokenData(contract, tokenId, whichContract) {
         // Fetch owner from contract
         if (whichContract = 2) {   //2d
             owner = await contract.explicitOwnershipOf(tokenId);
-            console.log("2D owner: "+owner)
+            console.log("*try* 2D owner: "+owner)
             ownerAddy = owner.addr
-            console.log("2D ownerAddy: "+ownerAddy)
+            console.log("*try* 2D ownerAddy: "+ownerAddy)
         }
         if (whichContract = 3) {   //3d
             ownerAddy = await contract.ownerOf(tokenId);
-            console.log("3D ownerAddy: "+ownerAddy)
+            console.log("*try* 3D ownerAddy: "+ownerAddy)
         }
 
         // Fetch tokenURI from contract
-        let tokenUri = await contract.tokenURI(tokenId);
+        tokenUri = await contract.tokenURI(tokenId);
 
-        console.log("ownerAddy: " + ownerAddy)
-        console.log("tokenUri:  " + tokenUri)
+        console.log("*try* ownerAddy: " + ownerAddy)
+        console.log("*try* tokenUri:  " + tokenUri)
 
         // Convert ipfs:// to https://ipfs.io/ipfs/
         if (tokenUri.startsWith('ipfs://')) {
@@ -121,9 +122,9 @@ async function getTokenData(contract, tokenId, whichContract) {
         };
     } catch (err) {
         console.error(`Error fetching token ${tokenId} data from ${which} contract:`, err.message);
-        console.log("whichContract: " + which)
-        console.log("ownerAddy:     " + ownerAddy)
-        console.log("tokenUri:      " + tokenUri)
+        console.log("*catch* whichContract: " + which)
+        console.log("*catch* ownerAddy:     " + ownerAddy)
+        console.log("*catch* tokenUri:      " + tokenUri)
         return { owner: 'Unknown', image: null, name: `Token #${tokenId}` };
     }
 }
