@@ -75,20 +75,23 @@ async function getTokenData(contract, tokenId, whichContract) {
     console.log("tokenId: " + tokenId)
     console.log("whichContract: " + whichContract)
 
+    let owner=""
+    let ownerAddy=""
+    let which=whichContract+"D"
+    
+
     try {
-        let ownerAddy=""
-        let owner=""
-        
         // Fetch owner from contract
         if (whichContract = 2) {   //2d
             owner = await contract.explicitOwnershipOf(tokenId);
+            console.log("2D owner: "+owner)
             ownerAddy = owner.addr
+            console.log("2D ownerAddy: "+ownerAddy)
         }
         if (whichContract = 3) {   //3d
             ownerAddy = await contract.ownerOf(tokenId);
+            console.log("3D ownerAddy: "+ownerAddy)
         }
-
-        whichContract = whichContract + "D";
 
         // Fetch tokenURI from contract
         let tokenUri = await contract.tokenURI(tokenId);
@@ -117,8 +120,8 @@ async function getTokenData(contract, tokenId, whichContract) {
             //name: metadata.name || `Token #${tokenId}`
         };
     } catch (err) {
-        console.error(`Error fetching token ${tokenId} data from ${whichContract} contract:`, err.message);
-        console.log("whichContract: " + whichContract + "D")
+        console.error(`Error fetching token ${tokenId} data from ${which} contract:`, err.message);
+        console.log("whichContract: " + which)
         console.log("ownerAddy:     " + ownerAddy)
         console.log("tokenUri:      " + tokenUri)
         return { owner: 'Unknown', image: null, name: `Token #${tokenId}` };
