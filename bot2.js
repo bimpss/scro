@@ -146,8 +146,6 @@ bot.command('scroto', async (ctx) => {
             getTokenData3D(contract2, id)    //3d
         ]);
 
-        return;
-
         if (!data1.image || !data2.image) {
             return ctx.reply('Could not fetch images from token metadata.');
         }
