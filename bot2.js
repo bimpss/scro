@@ -106,14 +106,13 @@ async function getTokenData3D(contract, tokenId) {
 
     //console.log("tokenId: " + tokenId)
 
-    let owner = ""
     let ownerAddy = ""
-    let tokenUri = ""
     let which = "3D"
 
     try {
         // Fetch owner from contract
-        ownerAddy = await contract.ownerOf(tokenId);
+        //ownerAddy = await contract.ownerOf(tokenId);
+        ownerAddy = await axios.get(`https://eth-mainnet.g.alchemy.com/nft/v3/docs-demo/getOwnersForNFT?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`);
         console.log("*try* 3D ownerAddy: " + ownerAddy)
 
        const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`;
