@@ -71,24 +71,32 @@ async function combineImages(buffer1, buffer2) {
     const image1 = sharp(buffer1);
     const image2 = sharp(buffer2);
 
+    // Get original metadata to determine max height
     const metadata1 = await image1.metadata();
     const metadata2 = await image2.metadata();
-
     const height = Math.max(metadata1.height, metadata2.height);
-    const resized1 = await image1.resize({ height }).toBuffer();
-    const resized2 = await image2.resize({ height }).toBuffer();
+
+    // Resize both to the same height
+    const resized1Buffer = await image1.resize({ height }).toBuffer();
+    const resized2Buffer = await image2.resize({ height }).toBuffer();
+
+    // Get new metadata after resize to get accurate width
+    const resized1Meta = await sharp(resized1Buffer).metadata();
+    const resized2Meta = await sharp(resized2Buffer).metadata();
+
+    const totalWidth = resized1Meta.width + resized2Meta.width;
 
     return await sharp({
         create: {
-            width: metadata1.width + metadata2.width,
+            width: totalWidth,
             height: height,
             channels: 4,
             background: { r: 255, g: 255, b: 255, alpha: 0 }
         }
     })
         .composite([
-            { input: resized1, left: 0, top: 0 },
-            { input: resized2, left: metadata1.width, top: 0 }
+            { input: resized1Buffer, left: 0, top: 0 },
+            { input: resized2Buffer, left: resized1Meta.width, top: 0 }
         ])
         .png()
         .toBuffer();
@@ -129,10 +137,12 @@ async function getTokenData2D(contract, tokenId) {
 async function getTokenData3D(tokenId) {
 
     let ownerAddy = ""
+    let oneOwner = ""
     let which = "3D"
 
     try {
         ownerAddy = await axios.get(`https://eth-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}/getOwnersForNFT?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`);
+        oneOwner = ownerAddy.owners[0];
         console.log("*try* 3D ownerAddy: " + ownerAddy)
 
         const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`;
@@ -142,7 +152,7 @@ async function getTokenData3D(tokenId) {
         console.log("3D url: " + imageUrl);
 
         return {
-            owner: ownerAddy,
+            owner: oneOwner,
             image: imageUrl,
             //name: metadata.name || `Token #${tokenId}`
         };
