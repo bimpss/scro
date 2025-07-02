@@ -77,10 +77,9 @@ async function getTokenData2D(contract, tokenId) {
     //console.log("whichContract: " + whichContract)
 
     let owner = ""
-    let ownerAddy = ""
-    let tokenUri = ""
-    let which = "2D"
-
+    let ownerAddy = "";
+    let which = "2D";
+    let contractAddy=contract.address;
 
     try {
         // Fetch owner from contract
@@ -135,7 +134,7 @@ async function getTokenData2D(contract, tokenId) {
         }
             
         */
-        const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=${contract}&tokenId=${tokenId}`;
+        const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=${contractAddy}&tokenId=${tokenId}`;
         console.log("2D url: "+url);
         const res = await axios.get(url);
         const imageUrl = res.data.metadata.image;
