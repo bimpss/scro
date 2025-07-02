@@ -14,6 +14,7 @@ const provider = new ethers.JsonRpcProvider(
 provider.getBlockNumber().then(console.log).catch(console.error);
 console.log(provider);
 
+const ALCHEMY_API_KEY = process.env.ALCHEMY_PROJECT_ID;
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
 
@@ -88,6 +89,8 @@ async function getTokenData2D(contract, tokenId) {
         ownerAddy = owner.addr
         console.log("2D ownerAddy: " + ownerAddy)
 
+        /* **********Get image from ipfs metadata
+
         // Fetch tokenURI from contract
         tokenUri = await contract.tokenURI(tokenId);
         //console.log("2D tokenUri:  " + tokenUri)
@@ -130,6 +133,20 @@ async function getTokenData2D(contract, tokenId) {
         catch (err) {
             console.error(`Error fetching token ${tokenId} metadata from ipfs for ${which} token:`, err.message);
         }
+            
+        */
+        const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=${contract}&tokenId=${tokenId}`;
+        console.log("2D url: "+url);
+        const res = await axios.get(url);
+        const imageUrl = res.data.metadata.image;
+        console.log("2D url: "+imageUrl);
+
+        return {
+            owner: ownerAddy,
+            image: imageUrl,
+            //name: metadata.name || `Token #${tokenId}`
+        };
+
     } catch (err) {
         console.error(`Error fetching token ${tokenId} data from ${which} contract:`, err.message);
         //console.log("*catch* whichContract: " + which)
