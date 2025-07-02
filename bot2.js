@@ -73,9 +73,6 @@ async function combineImages(buffer1, buffer2) {
 // Helper: Fetch token data from contract and metadata URI
 async function getTokenData2D(contract, tokenId) {
 
-    //console.log("tokenId: " + tokenId)
-    //console.log("whichContract: " + whichContract)
-
     let owner = ""
     let ownerAddy = "";
     let which = "2D";
@@ -87,53 +84,7 @@ async function getTokenData2D(contract, tokenId) {
         ownerAddy = owner.addr
         console.log("2D ownerAddy: " + ownerAddy)
 
-        /* **********Get image from ipfs metadata
-
-        // Fetch tokenURI from contract
-        tokenUri = await contract.tokenURI(tokenId);
-        //console.log("2D tokenUri:  " + tokenUri)
-
-        // Convert ipfs:// to https://ipfs.io/ipfs/
-        if (tokenUri.startsWith('ipfs://')) {
-            tokenUri = tokenUri.replace('ipfs://', 'https://ipfs.io/ipfs/');
-        }
-        console.log("2D tokenUri:  " + tokenUri)
-
-        try {
-            // Fetch metadata JSON
-            const metadataResponse = await axios.get(tokenUri, {
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-                    'Accept': 'application/json'
-                },
-                timeout: 30000 // timeout in milliseconds (5 seconds)
-            });
-            const metadata = metadataResponse.data;
-            console.log("metadataResponse**********")
-            console.log(JSON.stringify(metadataResponse));
-            console.log("metadataResponse.data*****")
-            console.log(JSON.stringify(metadataResponse.data));
-
-            // Metadata image might be ipfs:// too, fix that
-            let imageUrl = metadata.image || metadata.image_url || null;
-            if (imageUrl && imageUrl.startsWith('ipfs://')) {
-                imageUrl = imageUrl.replace('ipfs://', 'https://ipfs.io/ipfs/');
-            }
-            console.log("2D imageUrl:  " + imageUrl)
-
-            console.log("return { owner: " + ownerAddy + ", imageUrl:  " + imageUrl + " }")
-            return {
-                owner: ownerAddy,
-                image: imageUrl,
-                //name: metadata.name || `Token #${tokenId}`
-            };
-        }
-        catch (err) {
-            console.error(`Error fetching token ${tokenId} metadata from ipfs for ${which} token:`, err.message);
-        }
-            
-        */
-        const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`;
+        const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0x7115a8ecc11336e594618ef85be0b920dfe205d3&tokenId=${tokenId}`;
         console.log("2D url: "+url);
         const res = await axios.get(url);
         const imageUrl = res.data.metadata.image;
@@ -147,9 +98,6 @@ async function getTokenData2D(contract, tokenId) {
 
     } catch (err) {
         console.error(`Error fetching token ${tokenId} data from ${which} contract:`, err.message);
-        //console.log("*catch* whichContract: " + which)
-        //console.log("*catch* ownerAddy:     " + ownerAddy)
-        //console.log("*catch* tokenUri:      " + tokenUri)
         return { owner: 'Unknown', image: null, name: `Token #${tokenId}` };
     }
 }
@@ -163,33 +111,16 @@ async function getTokenData3D(contract, tokenId) {
     let tokenUri = ""
     let which = "3D"
 
-
     try {
         // Fetch owner from contract
         ownerAddy = await contract.ownerOf(tokenId);
         console.log("*try* 3D ownerAddy: " + ownerAddy)
 
-
-        // Fetch tokenURI from contract
-        tokenUri = await contract.tokenURI(tokenId);
-
-        console.log("3d ownerAddy: " + ownerAddy)
-        console.log("3d tokenUri:  " + tokenUri)
-
-        // Convert ipfs:// to https://ipfs.io/ipfs/
-        if (tokenUri.startsWith('ipfs://')) {
-            tokenUri = tokenUri.replace('ipfs://', 'https://ipfs.io/ipfs/');
-        }
-
-        // Fetch metadata JSON
-        const metadataResponse = await axios.get(tokenUri);
-        const metadata = metadataResponse.data;
-
-        // Metadata image might be ipfs:// too, fix that
-        let imageUrl = metadata.image || metadata.image_url || null;
-        if (imageUrl && imageUrl.startsWith('ipfs://')) {
-            imageUrl = imageUrl.replace('ipfs://', 'https://ipfs.io/ipfs/');
-        }
+       const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`;
+        console.log("3D url: "+url);
+        const res = await axios.get(url);
+        const imageUrl = res.data.metadata.image;
+        console.log("3D url: "+imageUrl);
 
         return {
             owner: ownerAddy,
@@ -198,9 +129,6 @@ async function getTokenData3D(contract, tokenId) {
         };
     } catch (err) {
         console.error(`Error fetching token ${tokenId} data from ${which} contract:`, err.message);
-        console.log("*catch* whichContract: " + which)
-        console.log("*catch* ownerAddy:     " + ownerAddy)
-        console.log("*catch* tokenUri:      " + tokenUri)
         return { owner: 'Unknown', image: null, name: `Token #${tokenId}` };
     }
 }
@@ -216,7 +144,7 @@ bot.command('scroto', async (ctx) => {
     try {
         const [data1, data2] = await Promise.all([
             getTokenData2D(contract1, id),   //2d
-            //getTokenData(contract2, id, 3)    //3d
+            getTokenData3D(contract2, id)    //3d
         ]);
 
         return;
