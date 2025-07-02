@@ -193,7 +193,10 @@ bot.command('scroto', async (ctx) => {
 \`${data1.owner}\` (2D)
 \`${data2.owner}\` (3D)`;
 
-        await ctx.replyWithPhoto({ source: tempFilePath }, { caption });
+        await ctx.replyWithPhoto({ source: tempFilePath }, {
+            caption,
+            parse_mode: 'Markdown'
+        });
 
         await fs.unlink(tempFilePath);
     } catch (err) {
