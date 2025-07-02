@@ -18,6 +18,12 @@ const ALCHEMY_API_KEY = process.env.ALCHEMY_PROJECT_ID;
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
 
+const gateways = [
+    'https://cloudflare-ipfs.com/ipfs/',
+    'https://nftstorage.link/ipfs/',
+    'https://ipfs.io/ipfs/',
+];
+
 // ERC-721 minimal ABI for ownerOf and tokenURI
 const ERC721A_ABI_2D = [
     "function explicitOwnershipOf(uint256 tokenId) view returns (tuple(address addr, uint64 startTimestamp, bool burned, uint24 extraData))",
@@ -38,12 +44,26 @@ const contract2 = new ethers.Contract(CONTRACT_2, ERC721A_ABI_3D, provider);
 
 // Helper: Download image from URL
 async function downloadImage(url) {
-    console.log(`downloadImage("${url})`);
+    const hashPath = url.replace('ipfs://', '').replace(/^https?:\/\/[^/]+\/ipfs\//, '');
 
-    //convert to gateway
-    const gatewayUrl = url.replace('ipfs://', 'https://ipfs.io/ipfs/');
-    const response = await axios.get(gatewayUrl, { responseType: 'arraybuffer' });
-    return Buffer.from(response.data, 'binary');
+    for (const base of gateways) {
+        const fullUrl = `${base}${hashPath}`;
+        console.log(`🔁 Trying gateway: ${fullUrl}`);
+
+        try {
+            const response = await axios.get(fullUrl, {
+                responseType: 'arraybuffer',
+                timeout: 10000
+            });
+
+            console.log(`✅ Success: ${fullUrl}`);
+            return Buffer.from(response.data, 'binary');
+        } catch (err) {
+            console.warn(`⚠️ Failed on ${base}: ${err.response?.status || err.message}`);
+        }
+    }
+
+    throw new Error(`❌ Failed to fetch IPFS image from all gateways for: ${url}`);
 }
 
 // Helper: Combine two images side-by-side
