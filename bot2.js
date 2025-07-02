@@ -39,7 +39,10 @@ const contract2 = new ethers.Contract(CONTRACT_2, ERC721A_ABI_3D, provider);
 // Helper: Download image from URL
 async function downloadImage(url) {
     console.log(`downloadImage("${url})`);
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
+
+    //convert to gateway
+    const gatewayUrl = url.replace('ipfs://', 'https://ipfs.io/ipfs/');
+    const response = await axios.get(gatewayUrl, { responseType: 'arraybuffer' });
     return Buffer.from(response.data, 'binary');
 }
 
