@@ -38,6 +38,7 @@ const contract2 = new ethers.Contract(CONTRACT_2, ERC721A_ABI_3D, provider);
 
 // Helper: Download image from URL
 async function downloadImage(url) {
+    console.log(`downloadImage("${url})`);
     const response = await axios.get(url, { responseType: 'arraybuffer' });
     return Buffer.from(response.data, 'binary');
 }
@@ -85,10 +86,10 @@ async function getTokenData2D(contract, tokenId) {
         console.log("2D ownerAddy: " + ownerAddy)
 
         const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0x7115a8ecc11336e594618ef85be0b920dfe205d3&tokenId=${tokenId}`;
-        console.log("2D url: "+url);
+        console.log("2D url: " + url);
         const res = await axios.get(url);
         const imageUrl = res.data.metadata.image;
-        console.log("2D url: "+imageUrl);
+        console.log("2D url: " + imageUrl);
 
         return {
             owner: ownerAddy,
@@ -102,24 +103,20 @@ async function getTokenData2D(contract, tokenId) {
     }
 }
 
-async function getTokenData3D(contract, tokenId) {
-
-    //console.log("tokenId: " + tokenId)
+async function getTokenData3D(tokenId) {
 
     let ownerAddy = ""
     let which = "3D"
 
     try {
-        // Fetch owner from contract
-        //ownerAddy = await contract.ownerOf(tokenId);
         ownerAddy = await axios.get(`https://eth-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}/getOwnersForNFT?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`);
         console.log("*try* 3D ownerAddy: " + ownerAddy)
 
-       const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`;
-        console.log("3D url: "+url);
+        const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`;
+        console.log("3D url: " + url);
         const res = await axios.get(url);
         const imageUrl = res.data.metadata.image;
-        console.log("3D url: "+imageUrl);
+        console.log("3D url: " + imageUrl);
 
         return {
             owner: ownerAddy,
@@ -143,7 +140,7 @@ bot.command('scroto', async (ctx) => {
     try {
         const [data1, data2] = await Promise.all([
             getTokenData2D(contract1, id),   //2d
-            getTokenData3D(contract2, id)    //3d
+            getTokenData3D(id)               //3d
         ]);
 
         if (!data1.image || !data2.image) {
