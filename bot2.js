@@ -123,7 +123,7 @@ async function getTokenData2D(contract, tokenId) {
         ownerAddy = owner.addr
         console.log("2D ownerAddy: " + ownerAddy)
 
-        const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0x7115a8ecc11336e594618ef85be0b920dfe205d3&tokenId=${tokenId}`;
+        const url = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`;
         console.log("2D req url: " + url);
         const res = await axios.get(url);
         const imageUrl = res.data.metadata.image;
@@ -171,13 +171,13 @@ async function getTokenData3D(tokenId) {
     console.log("3D ipfsImagesBase URL:", imageUrl);
 
     try {
-        ownerAddy = await axios.get(`https://eth-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}/getOwnersForNFT?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`);
+        ownerAddy = await axios.get(`https://eth-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}/getOwnersForNFT?contractAddress=0x7115a8ecc11336e594618ef85be0b920dfe205d3&tokenId=${tokenId}`);
         //console.log("3D ownerAddy: " + ownerAddy)
         console.log("3D ownerAddy.owners[0]: " + ownerAddy.data.owners[0]);
 
         if (!imageUrl) {
             // Optionally fallback to Alchemy metadata if image wasn't found via IPFS gateway
-            const metaUrl = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`;
+            const metaUrl = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=0x7115a8ecc11336e594618ef85be0b920dfe205d3&tokenId=${tokenId}`;
             console.log("3D metadata URL:", metaUrl);
             const metaRes = await axios.get(metaUrl);
             imageUrl = metaRes.data.metadata?.image || null;
