@@ -136,6 +136,7 @@ async function getTokenData2D(contract, tokenId) {
 
 async function getTokenData3D(tokenId) {
 
+    let url = ""
     let ownerAddy = ""
     let which = "3D"
     let ipfsImagesBase = "QmW95E3GsyQ6A6xjyQZCm3gvR4BNFUdu8BBpYm28tJ48VS";
