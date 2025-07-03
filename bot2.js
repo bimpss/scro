@@ -19,8 +19,8 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
 
 const gateways = [
-    'https://cloudflare-ipfs.com/ipfs/',
-    'https://nftstorage.link/ipfs/',
+    //'https://cloudflare-ipfs.com/ipfs/',
+    //'https://nftstorage.link/ipfs/',
     'https://ipfs.io/ipfs/',
 ];
 
@@ -136,7 +136,7 @@ async function getTokenData2D(contract, tokenId) {
 
 async function getTokenData3D(tokenId) {
 
-    let url = ""
+    let url, imageUrl = ""
     let ownerAddy = ""
     let which = "3D"
     let ipfsImagesBase = "QmW95E3GsyQ6A6xjyQZCm3gvR4BNFUdu8BBpYm28tJ48VS";
