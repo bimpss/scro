@@ -25,6 +25,11 @@ const gateways = [
     'https://ipfs.io/ipfs/',
 ];
 
+const headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/115.0.0.0 Safari/537.36',
+    'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+};
+
 // ERC-721 minimal ABI for ownerOf and tokenURI
 const ERC721A_ABI_2D = [
     "function explicitOwnershipOf(uint256 tokenId) view returns (tuple(address addr, uint64 startTimestamp, bool burned, uint24 extraData))",
@@ -53,6 +58,7 @@ async function downloadImage(url) {
 
         try {
             const response = await axios.get(fullUrl, {
+                headers,
                 responseType: 'arraybuffer',
                 timeout: 10000
             });
@@ -142,11 +148,6 @@ async function getTokenData3D(tokenId) {
     let ownerAddy = "";
     let which = "3D";
     let ipfsImagesBase = "QmW95E3GsyQ6A6xjyQZCm3gvR4BNFUdu8BBpYm28tJ48VS";
-
-    const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/115.0.0.0 Safari/537.36',
-        'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
-    };
 
     //check if ipfsImagesBase+${token} exists
     for (const gateway of gateways) {
