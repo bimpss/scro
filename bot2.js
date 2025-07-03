@@ -165,6 +165,7 @@ async function getTokenData(which,contract,ipfsImagesBase,tokenId) {
     }
 }
 
+/***********
 // Helper: Fetch token data from contract and metadata URI
 async function getTokenData2D(contract, tokenId) {
 
@@ -198,14 +199,6 @@ async function getTokenData2D(contract, tokenId) {
     console.log("2D ipfsImagesBase URL:", imageUrl);
 
     try {
-        /*
-        // Fetch owner from contract
-        owner = await contract.explicitOwnershipOf(tokenId);
-        //console.log(2D owner: "+owner)
-        ownerAddy = owner.addr
-        console.log("2D ownerAddy: " + ownerAddy)
-        */
-
         ownerAddy = await axios.get(`https://eth-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}/getOwnersForNFT?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`);
         //console.log("3D ownerAddy: " + ownerAddy)
         console.log("3D ownerAddy.owners[0]: " + ownerAddy.data.owners[0]);
@@ -230,7 +223,8 @@ async function getTokenData2D(contract, tokenId) {
         return { owner: 'Unknown', image: null, name: `Token #${tokenId}` };
     }
 }
-
+***********/
+/***********
 async function getTokenData3D(tokenId) {
 
     let ownerAddy = "";
@@ -284,6 +278,7 @@ async function getTokenData3D(tokenId) {
         return { owner: 'Unknown', image: null, name: `Token #${tokenId}` };
     }
 }
+**********/
 
 bot.command('scroto', async (ctx) => {
     const input = ctx.message.text.split(' ')[1];
@@ -295,9 +290,6 @@ bot.command('scroto', async (ctx) => {
 
     try {
         const [data1, data2] = await Promise.all([
-            //getTokenData2D(contract1, id),   //2d
-            //getTokenData3D(id),               //3d
-
             //contract, ipfs base for images, tokenId
             getTokenData("2D","0xebcf83bde8e82708bfc027b2c32412283b6c23ff","bafybeier5b4pnvpmg3coiano3tqguok5eastkqoiv7copiokbod4rv3sia", id), // 2D
             getTokenData("3D","0x7115a8ecc11336e594618ef85be0b920dfe205d3","QmW95E3GsyQ6A6xjyQZCm3gvR4BNFUdu8BBpYm28tJ48VS", id)  // 3D
