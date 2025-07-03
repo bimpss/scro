@@ -138,7 +138,7 @@ async function getTokenData3D(tokenId) {
 
     let ownerAddy = ""
     let which = "3D"
-    let ipfsImagesBase = "QmW95E3GsyQ6A6xjyQZCm3gvR4BNFUdu8BBpYm28tJ48VS/";
+    let ipfsImagesBase = "QmW95E3GsyQ6A6xjyQZCm3gvR4BNFUdu8BBpYm28tJ48VS";
 
     //check if ipfsImagesBase+${token} exists
     for (const gateway of gateways) {
