@@ -137,7 +137,6 @@ async function getTokenData2D(contract, tokenId) {
 async function getTokenData3D(tokenId) {
 
     let ownerAddy = ""
-    let oneOwner = ""
     let which = "3D"
     let ipfsImagesBase = "QmW95E3GsyQ6A6xjyQZCm3gvR4BNFUdu8BBpYm28tJ48VS/";
 
@@ -155,6 +154,8 @@ async function getTokenData3D(tokenId) {
             console.warn(`❌ Failed at ${url}:`, err.response?.status || err.message);
         }
     }
+    console.log("3D ipfsImagesBase:", url);
+    console.log("3D ipfsImagesBase URL:", imageUrl);
 
     try {
         ownerAddy = await axios.get(`https://eth-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}/getOwnersForNFT?contractAddress=0xebcf83bde8e82708bfc027b2c32412283b6c23ff&tokenId=${tokenId}`);
