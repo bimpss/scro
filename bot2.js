@@ -21,6 +21,7 @@ const bot = new Telegraf(BOT_TOKEN);
 const gateways = [
     //'https://cloudflare-ipfs.com/ipfs/',
     //'https://nftstorage.link/ipfs/',
+    //'https://gateway.pinata.cloud/ipfs/',
     'https://ipfs.io/ipfs/',
 ];
 
@@ -136,16 +137,26 @@ async function getTokenData2D(contract, tokenId) {
 
 async function getTokenData3D(tokenId) {
 
-    let url, imageUrl = ""
-    let ownerAddy = ""
-    let which = "3D"
+    let url = "";
+    let imageUrl = "";
+    let ownerAddy = "";
+    let which = "3D";
     let ipfsImagesBase = "QmW95E3GsyQ6A6xjyQZCm3gvR4BNFUdu8BBpYm28tJ48VS";
+
+    const headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/115.0.0.0 Safari/537.36',
+        'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+    };
 
     //check if ipfsImagesBase+${token} exists
     for (const gateway of gateways) {
         const url = `${gateway}${ipfsImagesBase}/${tokenId}.png`;
         try {
-            const response = await axios.head(url, {timeout: 10000});
+            const response = await axios.head(url, {
+                headers,
+                timeout: 10000,
+                validateStatus: () => true, // Don't throw on non-200
+            });
             if (response.status === 200) {
                 console.log(`✅ Found image at: ${url}`);
                 imageUrl = url;
