@@ -144,7 +144,7 @@ async function getTokenData3D(tokenId) {
     for (const gateway of gateways) {
         const url = `${gateway}${ipfsImagesBase}/${tokenId}.png`;
         try {
-            const response = await axios.head(url);
+            const response = await axios.head(url, {timeout: 10000});
             if (response.status === 200) {
                 console.log(`✅ Found image at: ${url}`);
                 imageUrl = url;
