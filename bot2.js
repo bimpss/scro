@@ -150,7 +150,7 @@ async function getTokenData3D(tokenId) {
 
     //check if ipfsImagesBase+${token} exists
     for (const gateway of gateways) {
-        const url = `${gateway}${ipfsImagesBase}/${tokenId}.png`;
+        url = `${gateway}${ipfsImagesBase}/${tokenId}.png`;
         try {
             const response = await axios.head(url, {
                 headers,
